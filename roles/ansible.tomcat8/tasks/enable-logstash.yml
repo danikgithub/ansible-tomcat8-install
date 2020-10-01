@@ -1,0 +1,40 @@
+---
+#
+# Enable Logstash logging for Tomcat
+#
+- name: check if logstash is installed.
+  stat: path='{{ tomcat_catalina_home }}/lib/logstash'
+  register: logstash_installed
+
+- name: create logstash directory
+  file:
+    path: "{{ tomcat_catalina_home }}/lib/logstash"
+    state: directory
+    owner: "{{ tomcat_root_user }}"
+    group: "{{ tomcat_system_group }}"
+    mode: 0750
+  when: (logstash_installed.stat.exists == false or tomcat_force_update == true)
+
+- name: download Logstash logging bundle
+  get_url:
+    url: "http://ooo.itc.hu/ansible/logstash-bundle-1.tar.gz"
+    dest: "{{ tomcat_download_dir }}/logstash-bundle-1.tar.gz"
+  when: tomcat_offline_install == false
+
+- name: extract Logstash logging bundle
+  unarchive:
+    src: "{{ tomcat_download_dir }}/logstash-bundle-1.tar.gz"
+    dest: "{{ tomcat_catalina_home }}/lib/logstash"
+    owner: "{{ tomcat_root_user }}"
+    group: "{{ tomcat_system_group }}"
+    copy: false
+  when: (logstash_installed.stat.exists == false or tomcat_force_update == true) and tomcat_offline_install == false
+
+- name: extract Logstash logging bundle
+  unarchive:
+    src: "logstash-bundle-1.tar.gz"
+    dest: "{{ tomcat_catalina_home }}/lib/logstash"
+    owner: "{{ tomcat_root_user }}"
+    group: "{{ tomcat_system_group }}"
+    copy: true
+  when: (logstash_installed.stat.exists == false or tomcat_force_update == true) and tomcat_offline_install != false
