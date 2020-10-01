@@ -1,0 +1,15 @@
+pipeline {
+  agent any
+    stages{
+      stage('SCM Checkout'){
+        steps{
+	      git 'https://github.com/danikgithub/tomcat9-ansible.git'
+        }
+      }
+      stage('Execute Ansible'){
+        steps{
+	        ansiblePlaybook become: true, becomeUser: 'daniel', credentialsId: '06e23b38-df45-48c6-82e7-c5d4f57a89c1', installation: 'ansible2', inventory: 'hosts', playbook: 'tomcat8-install.yml'
+        }
+      }
+    }
+  }
