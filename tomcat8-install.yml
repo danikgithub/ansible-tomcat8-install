@@ -5,4 +5,4 @@
   become_method: sudo       # Set become method
   remote_user: daniel         # Update username for remote server
   roles:
-    - ansible-tomcat8
+    - ansible.tomcat8
