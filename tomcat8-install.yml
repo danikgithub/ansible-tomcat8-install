@@ -3,6 +3,6 @@
   hosts: dev
   become: True               # If to escalate privilege
   become_method: sudo       # Set become method
-  remote_user: daniel         # Update username for remote server
+  remote_user: jenkins         # Update username for remote server
   roles:
     - ansible.tomcat8
