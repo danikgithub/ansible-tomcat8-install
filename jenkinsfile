@@ -8,7 +8,7 @@ pipeline {
       }
       stage('Execute Ansible') {
         steps{
-	  ansiblePlaybook become: true, becomeUser: 'jenkins', credentialsId: '383ba359-531e-458d-8528-9d3a37594371', installation: 'ansible2', inventory: 'hosts', playbook: 'ansible-tomcat8-install'
+	  ansiblePlaybook credentialsId: '4307ef33-03fa-44eb-afbe-570d9d30fd93', installation: 'ansible2', inventory: 'hosts', playbook: 'ansible-tomcat8-install'
         }
       }
     }
